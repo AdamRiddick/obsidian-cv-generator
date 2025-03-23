@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import { PDFViewer } from '@react-pdf/renderer';
-import { documentStyles, markdownToCv, CvDocument, validateCvMarkdown } from '@thecap-cv/components';
+import { markdownToCv, validateCvMarkdown } from 'Utilities/cvConvertor';
+import { documentStyles, CvDocument } from 'Components/CvDocument'
 
 interface ReactViewProps {
     markdown: string;
@@ -22,7 +23,7 @@ export const ReactView: React.FC<ReactViewProps> = ({ markdown }) => {
         <p style={{ marginTop: '16px' }}>
           Please check the correct CV format in our{' '}
           <a 
-            href="https://github.com/xthecapx/cv-generator#readme" 
+            href="https://github.com/AdamRiddick/obsidian-cv-generator#readme" 
             target="_blank" 
             rel="noopener noreferrer"
             style={{ color: '#4444ff' }}

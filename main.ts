@@ -38,15 +38,15 @@ class CvModal extends Modal {
 	}
 }
 
-export default class ThecapCvGenerator extends Plugin {
+export default class CvGenerator extends Plugin {
 	async onload() {
-		this.addRibbonIcon('pdf-file', 'Preview curriculum', () => {
+		this.addRibbonIcon('pdf-file', 'Preview CV', () => {
 			new CvModal(this.app).open();
 		});
 
 		this.addCommand({
-			id: 'thecap-cv-generator-preview',
-			name: 'Open curriculum preview',
+			id: 'cv-generator-preview',
+			name: 'Open CV preview',
 			callback: () => {
 				new CvModal(this.app).open();
 			}
