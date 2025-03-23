@@ -3,6 +3,19 @@ import { ContactInfo, ContactProperty, ContentItem, Data, Properties, Section, S
 
 export const CV_STORAGE_KEY = 'cvData';
 
+export function formatString(input: string) {
+  return input
+    .replace(/####/g, '')     // Removes all instances of '####'
+    .replace(/###/g, '')      // Removes all instances of '###'
+    .replace(/##/g, '')       // Removes all instances of '##'
+    .replace(/# /g, '')       // Removes all instances of '# '
+    .replace(/^-\s/g, '')     // Removes '- ' only at the start of the string
+    .replace(/_/g, '')        // Removes all instances of '_'. Note: This means italics are not supported.
+    .replace(/\\break/g, '')  // Removes all instances of '\break'
+    .replace(/<br>/g, '')     // Removes all instances of '<br>'
+    .trim();                  // Trims any leading or trailing whitespace
+}
+
 export function parseYamlFrontmatter(markdown: string): { properties: Properties, content: string } {
   const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
   const match = markdown.match(frontmatterRegex);
@@ -45,19 +58,23 @@ export function markdownToCv(markdown: string): Data {
     const line = lines[i].trim();
 
     if (line.startsWith('# ')) {
-      cv.contact.name = line.replace('# ', '');
+      cv.contact.name = formatString(line);
       
       while (i + 1 < lines.length && lines[i + 1].startsWith('- ')) {
         i++;
-        const [key, value, linkType, url] = lines[i].replace('- ', '').split(': ');
-          var property: ContactProperty = {
-            key: key,
-            text: value,
-            linkType: linkType,
-            url: url
-          }
+        const [key, value, linkType] = lines[i].replace('- ', '').split(': ');
+        if (key.toLowerCase() === 'title') {
+          cv.contact.title = formatString(value);
+          continue;
+        }
 
-          cv.contact.properties.push(property);
+        var property: ContactProperty = {
+          key: key,
+          text: formatString(value),
+          linkType: linkType,
+        }
+
+        cv.contact.properties.push(property);
       }
 
       continue;
@@ -68,15 +85,17 @@ export function markdownToCv(markdown: string): Data {
         cv.sections.push(currentSection);
       }
       
-      const title = line.replace('## ', '');
+      let startOnNewPage = line.includes('\\break');
       currentSection = {
-        title: title.replace('\\break', '').trim(),
+        title: formatString(line),
         subSections: [],
-        startOnNewPage: title.includes('\\break')
+        startOnNewPage: startOnNewPage
       };
+      
       currentSubSection = null;
       continue;
     }
+    
     if (!line.startsWith('#') && currentSection && !currentSubSection) {
       currentSubSection = {
         content: []
@@ -84,8 +103,8 @@ export function markdownToCv(markdown: string): Data {
 
       var isListItem = line.startsWith('- ');
       var contentItem: ContentItem = {
-        content: line.replace('- ', ''),
-        isListItem: isListItem
+        content: formatString(line),
+        isListItem: isListItem,
       }
 
       currentSubSection.content.push(contentItem);
@@ -98,7 +117,7 @@ export function markdownToCv(markdown: string): Data {
         const headerLine = line.replace('### ', '');
         const hasBreak = headerLine.endsWith('\\break');
         const cleanHeader = hasBreak ? headerLine.slice(0, -6).trim() : headerLine;
-        const [title, titleRightAligned] = cleanHeader.split(' | ');
+        const [title, titleRightAligned] = formatString(cleanHeader).split(' | ');
         currentSubSection = {
           title,
           titleRightAligned,
@@ -111,7 +130,7 @@ export function markdownToCv(markdown: string): Data {
     }
 
     if (line.startsWith('#### ') && currentSubSection) {
-      const [secondary, secondaryRight] = line.replace('#### ', '').split(' | ');
+      const [secondary, secondaryRight] = formatString(line).split(' | ');
       currentSubSection.subtitle = secondary;
       currentSubSection.subtitleRightAligned = secondaryRight;
       continue;
@@ -120,9 +139,11 @@ export function markdownToCv(markdown: string): Data {
     if (!line.startsWith('#') && currentSubSection) {
       var isListItem = line.startsWith('- ');
       var contentItem: ContentItem = {
-        content: line.replace('- ', ''),
-        isListItem: isListItem
+        content: formatString(line),
+        isListItem: isListItem,
       }
+
+      currentSubSection.content.push(contentItem);
       continue;
     }
   }
@@ -146,28 +167,13 @@ export function validateCvMarkdown(markdown: string): { isValid: boolean; errors
 
   const cv = markdownToCv(markdown);
 
-  // Validate contact information
+  //Validate contact information
   const requiredContactFields: (keyof ContactInfo)[] = ['name', 'title'];
   requiredContactFields.forEach(field => {
     if (!cv.contact[field]) {
       errors.push(`Missing required contact field: ${field}`);
     }
   });
-
-  // // Validate sections
-  // if (!cv.sections.length) {
-  //   errors.push('CV must have at least one section');
-  // }
-
-  // // Validate each section has a title and at least one item
-  // cv.sections.forEach((section, index) => {
-  //   if (!section.title) {
-  //     errors.push(`Section ${index + 1} is missing a title`);
-  //   }
-  //   if (!section.items.length) {
-  //     errors.push(`Section "${section.title || index + 1}" must have at least one item`);
-  //   }
-  // });
 
   return {
     isValid: errors.length === 0,

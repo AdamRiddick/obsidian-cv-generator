@@ -38,5 +38,4 @@ export interface ContactProperty {
   key: string
   text: string
   linkType: string
-  url?: string
 }

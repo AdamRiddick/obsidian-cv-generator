@@ -52,7 +52,7 @@ Use the following markdown notation to structure your CV:
 | Notation | Description | Example |
 |----------|-------------|----------|
 | `# Name` | Your name followed by contact details | `# John Doe` |
-| `- key: text : linkType? : url?` | Contact details (under name). Link type (optional) can be any link rel (tel:, mailto: https://). URL is optional, and can be used if you want the display text to be different to the URL. | `- email: john@example.com \| mailto:` |
+| `- key: text : linkType?` | Contact details (under name). Link type (optional) can be any link rel (tel:, mailto: https://). | `- email: john@example.com \| mailto:` |
 | `## Section` | Main section | `## Experience` |
 | `## Section \break` | Section with page break after | `## Education \break` |
 | `### Title \| Right Text` | Subsection with title and optional right-aligned text | `### Software Engineer \| 2020-Present` |
@@ -60,6 +60,8 @@ Use the following markdown notation to structure your CV:
 | `#### Subtitle \| Right Text` | Subtitle with optional right-aligned text | `#### Team Lead \| New York` |
 | `- Content` | Bullet point content | `- Led team of 5 developers` |
 | `Content` | Paragraph content | `An experienced software engineer.` |
+| `<br>` | Line break | |
+| `**text** | Bold. Note: this only works in content | `**text**` |
 
 ### Example
 

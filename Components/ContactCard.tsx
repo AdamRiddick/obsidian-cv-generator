@@ -28,21 +28,35 @@ interface CvSectionProps {
 }
 
 export function ContactCard({ properties }: CvSectionProps) {
+  // Group properties into chunks of 3
+  const groupedProperties = properties.reduce((rows: any[][], property, index) => {
+    if (index % 3 === 0) {
+      rows.push([property]);
+    } else {
+      rows[rows.length - 1].push(property);
+    }
+    return rows;
+  }, []);
+
   return (
-      <View style={contactCardStyles.contactRow}>
-        {properties.map((property, index) => (
-          <Fragment key={index}>
-            {index > 0 && <Text style={contactCardStyles.bullet}>•</Text>}
-            <Text>{`${property.key}: `}</Text>
-            {property.linkType ? (
-              <Link src={`${property.linkType}${property.text}`} style={contactCardStyles.contactText}>
-                {property.text}
-              </Link>
-            ) : (
-              <Text style={contactCardStyles.contactText}>{property.text}</Text>
-            )}
-          </Fragment>
-        ))}
-      </View>
+    <>
+      {groupedProperties.map((group, rowIndex) => (
+        <View key={rowIndex} style={contactCardStyles.contactRow}>
+          {group.map((property, index) => (
+            <Fragment key={index}>
+              {index > 0 && <Text style={contactCardStyles.bullet}>•</Text>}
+              <Text>{`${property.key}: `}</Text>
+              {property.linkType ? (
+                <Link src={`${property.linkType}${property.text}`} style={contactCardStyles.contactText}>
+                  {property.text}
+                </Link>
+              ) : (
+                <Text style={contactCardStyles.contactText}>{property.text}</Text>
+              )}
+            </Fragment>
+          ))}
+        </View>
+      ))}
+    </>
   );
 }

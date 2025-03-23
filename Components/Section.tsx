@@ -61,7 +61,7 @@ export function Section({ section }: CvSectionProps) {
           {(subSection.title || subSection.subtitleRightAligned) && (
             <View style={sectionStyles.headerRow}>
               <Text style={sectionStyles.sectionTitleText}>{subSection.title}</Text>
-              <Text>{subSection.subtitleRightAligned}</Text>
+              <Text>{subSection.titleRightAligned}</Text>
             </View>
           )}
           
@@ -72,12 +72,22 @@ export function Section({ section }: CvSectionProps) {
             </View>
           )}
           
-          {subSection.content && (
+          {subSection && (
             <View style={sectionStyles.detailsList}>
               {subSection.content.map((contentItem, contentIndex) => (
                 <View key={contentIndex} style={{ flexDirection: 'row' }}>
                   {contentItem.isListItem && <Text style={sectionStyles.bullet}>• </Text>}
-                  <Text style={sectionStyles.detailItem}>{contentItem.content}</Text>
+                    <Text style={sectionStyles.detailItem}>
+                      {(contentItem.content || '\n').split(/(\*\*.*?\*\*)/g).map((part, index) =>
+                        part.startsWith('**') && part.endsWith('**') ? (
+                          <Text key={index} style={{ fontWeight: 'bold' }}>
+                            {part.slice(2, -2)}
+                          </Text>
+                        ) : (
+                          <Text key={index}>{part}</Text>
+                        )
+                      )}
+                    </Text>
                 </View>
               ))}
             </View>
