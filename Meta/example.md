@@ -5,8 +5,10 @@
 - Location: York, UK
 - LinkedIn: linkedin.com/in/john-smith : https://
 - Portfolio: johnsmithbrews.com : https://
+
 ## Personal Statement
 Passionate and dedicated Brewer with over 8 years of experience in craft beer production, specializing in recipe development, quality control, and sustainable brewing practices. Committed to delivering exceptional craft beverages while maintaining high standards of safety and efficiency. Proven ability to manage brewery operations, mentor teams, and collaborate with stakeholders to drive product excellence.
+
 ## Experience
 ### Head Brewer
 #### Yorkshire Craft Brewery, York, UK | Jan 2020 – Present
@@ -33,11 +35,12 @@ Passionate and dedicated Brewer with over 8 years of experience in craft beer pr
 - Cleaned and sanitized brewing vessels and equipment.
 - Learned the fundamentals of recipe formulation and ingredient selection.
 
-## Qualifications & Awards reak
+## Qualifications & Awards \break
 - Bachelor of Science in Brewing and Distilling - Heriot-Watt University _(2014)_
 - Institute of Brewing & Distilling (IBD) Diploma in Brewing _(2017)_
 - Yorkshire Craft Beer Awards: Gold for Best IPA _(2022)_
 - British Brewing Association Sustainability Award _(2021)_
+
 ## Skills
 - **Brewing Expertise:** Recipe Development, Quality Control, Fermentation Management, Yeast Propagation, Sensory Analysis, Sustainable Brewing.
 <br>
