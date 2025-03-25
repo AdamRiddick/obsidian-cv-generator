@@ -68,7 +68,7 @@ export function markdownToCv(markdown: string): Data {
           continue;
         }
 
-        var property: ContactProperty = {
+        let property: ContactProperty = {
           key: key,
           text: formatString(value),
           linkType: linkType,
@@ -101,8 +101,8 @@ export function markdownToCv(markdown: string): Data {
         content: []
       };
 
-      var isListItem = line.startsWith('- ');
-      var contentItem: ContentItem = {
+      let isListItem = line.startsWith('- ');
+      let contentItem: ContentItem = {
         content: formatString(line),
         isListItem: isListItem,
       }
@@ -137,8 +137,8 @@ export function markdownToCv(markdown: string): Data {
     }
 
     if (!line.startsWith('#') && currentSubSection) {
-      var isListItem = line.startsWith('- ');
-      var contentItem: ContentItem = {
+      let isListItem = line.startsWith('- ');
+      let contentItem: ContentItem = {
         content: formatString(line),
         isListItem: isListItem,
       }
